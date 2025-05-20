@@ -10,12 +10,22 @@ const {
     printf
 } = format;
 
+const taskLogger = require('../custom-logger/task-logger').spinnerBar;
+
 const consoleFormat = printf(({
-    level,
+    level,  
     message,
     label,
     timestamp
+}:{
+    level: string,
+    message: string,
+    label: string,
+    timestamp: string
 }) => {
+    if(level === 'error'){
+        taskLogger.warn(message);
+    }
     return `${timestamp} [${label}] [${level}]: ${message}`;
 });
 
@@ -24,6 +34,11 @@ const jsonFormat = printf(({
     message,
     label,
     timestamp
+}:{
+    level: string,
+    message: string,
+    label: string,
+    timestamp: string
 }) => {
     return JSON.stringify({
         timestamp,
@@ -34,6 +49,7 @@ const jsonFormat = printf(({
 });
 var logger = createLogger({
     level: 'debug',
+    silent: !global.verbose,
     transports: [
         new(transports.Console)({
             timestamp: function () {
@@ -48,11 +64,12 @@ var logger = createLogger({
     ]
 });
 
-logger.setLogDirectory = (path) => {
+logger.setLogDirectory = (path: string) => {
     logger.configure({
         level: 'debug',
         transports: [
             new(transports.Console)({
+                silent: !global.verbose,
                 timestamp: function () {
                     return Date.now();
                 },
@@ -81,9 +98,17 @@ logger.setLogDirectory = (path) => {
                     timestamp(),
                     jsonFormat
                 )
+            }),
+            new transports.File({
+                filename: path + '/error.log',
+                level: 'error',
+                format: combine(
+                    timestamp(),
+                    consoleFormat
+                ),
             })
         ]
     });
 };
 
-module.exports = logger;
+export default logger;

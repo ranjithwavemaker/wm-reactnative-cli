@@ -37,7 +37,7 @@ export WM_REACTNATIVE_CLI="$HOME/cli/"
 ### Requirements
 
 -   Linux or MAC or Windows
--   Node 18.x ([https://nodejs.org/en/blog/release/v14.15.1/](https://nodejs.org/en/download/))
+-   Node 22.11.0 ([https://nodejs.org/en/blog/release/v14.15.1/](https://nodejs.org/en/download/))
 -   GIT ([https://git-scm.com/download](https://git-scm.com/download))
 -   Java 17 ([https://openjdk.org/install/](https://openjdk.org/install/))
 -   Yarn (npm install -g yarn)
@@ -107,7 +107,7 @@ wm-reactnative build android "/path/to/src" \
 -   MAC machine
 -   Latest XCODE
 -   CocoaPods ([https://guides.cocoapods.org/using/getting-started.html#toc_3](https://guides.cocoapods.org/using/getting-started.html#toc_3))
--   Node 18.x ([https://nodejs.org/en/blog/release/v12.22.0/](https://nodejs.org/en/download/))
+-   Node 22.11.0 ([https://nodejs.org/en/blog/release/v12.22.0/](https://nodejs.org/en/download/))
 -   GIT ([https://git-scm.com/download/mac](https://git-scm.com/download/mac))
 -   Yarn (npm install -g yarn)
 -   Apple developer or distribution P12 certificates
@@ -150,9 +150,9 @@ wm-reactnative build ios "/path/to/src" \
 ## Run web-preview
 
 ### Requirements
-- Node >= 18.16.1 
+- Node 22.11.0 
 - GIT ([https://git-scm.com/download](https://git-scm.com/download))
-- npm 9.5.x
+- npm 10.9.x
 - Yarn (npm install -g yarn)
 - Expo cli (npm install -g expo-cli@latest)
 
@@ -160,17 +160,19 @@ wm-reactnative build ios "/path/to/src" \
 
 wm-reactnative run web-preview <preview_url> [additional_arguments]
 
+**_NOTE:_** The preview uses the Expo Metro bundler by default.
 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Argument**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| **Description** |
 |--|--|
 | **preview_url** | app preview url |
-|**\-\-clean**|**DEFAULT:** false <br> if true, existing project directory is removed |
+|**\-\-clean**| With this flag, existing project directory is removed |
+|**\-\-esbuild**| With this flag, the preview uses the esbuild bundler instead of Expo Metro bundler. This is the standard preview mode used in Studio. |
 
 ## Sync
 
 ### Requirements
-- Node >= 18.16.1 
+- Node 22.11.0
 - GIT ([https://git-scm.com/download](https://git-scm.com/download))
-- npm 9.5.x
+- npm 10.9.x
 - Yarn (npm install -g yarn)
 - Expo cli (npm install -g expo-cli@latest)
 
