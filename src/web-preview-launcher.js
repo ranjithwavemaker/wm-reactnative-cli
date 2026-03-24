@@ -256,8 +256,14 @@ async function getCodeGenPath(projectDir) {
             });
             let version = semver.coerce(uiVersion).version;
             if(semver.gte(version, '11.10.0')){
-                rnAppPath = `${projectDir}/target/codegen/node_modules/${global.WM_REPO_SCOPE}/rn-app`;
-                await exec('npm', ['install', '--save-dev', `${global.WM_REPO_SCOPE}/rn-app@${uiVersion}`], {
+                rnAppPath = `${projectDir}/target/codegen/node_modules/@wavemaker/rn-app`;
+                await exec('npm', ['install', '--save-dev', `@wavemaker/rn-app@${uiVersion}`], {
+                    cwd: temp
+                });
+            }
+            if(global.IS_AI_PLATFORM){
+                rnAppPath = `${projectDir}/target/codegen/node_modules/@wavemaker-ai/rn-app`;
+                await exec('npm', ['install', '--save-dev', `@wavemaker-ai/rn-app@${uiVersion}`], {
                     cwd: temp
                 });
             }
