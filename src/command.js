@@ -16,7 +16,7 @@ const crypto = require('crypto');
 const config = require('./config');
 const ios = require('./ios');
 const { resolve } = require('path');
-const { isWindowsOS, readAndReplaceFileContent, getDestPathForWindows, updateIsAiPlatform } = require('./utils');
+const { isWindowsOS, readAndReplaceFileContent, getDestPathForWindows } = require('./utils');
 const chalk = require('chalk');
 const taskLogger = require('./custom-logger/task-logger').spinnerBar;
 const loggerLabel = 'wm-reactnative-cli';
@@ -35,7 +35,7 @@ async function updatePackageJsonFile(path) {
         const jsonData = JSON.parse(data);
         jsonData['main'] = "index";
         if (config.embed) {
-            jsonData['dependencies']['@wavemaker/expo-native-module'] = "latest";
+            jsonData['dependencies']['@wavemaker-ai/expo-native-module'] = "latest";
         }
         if(!jsonData['devDependencies']['@babel/plugin-proposal-optional-chaining']){
             jsonData['devDependencies']['@babel/plugin-proposal-optional-chaining'] = "^7.21.0";
@@ -90,14 +90,6 @@ async function updatePackageJsonFile(path) {
     args.dest = directories.dest;
  
     config.metaData = await readWmRNConfig(args.src);
-    const packageJsonData = await readPackageJson(args.src);
-
-    const deps = packageJsonData.dependencies || {};
-    const is_ai_platform = Boolean(
-        deps['@wavemaker-ai/rn-codegen'] ||
-        deps['@wavemaker-ai/app-rn-runtime']
-    );
-    updateIsAiPlatform(is_ai_platform);
 
     if (config.metaData.icon.src.startsWith('resources')) {
         config.metaData.icon.src = 'assets/' + config.metaData.icon.src;
@@ -344,14 +336,6 @@ async function readWmRNConfig(src) {
     return data;
 }
 
-async function readPackageJson(src){
-    src = path.resolve(src) + '/';
-    let packageJsonPath = src + 'package.json';
-    let data = await fs.readFileSync(packageJsonPath);
-    data = JSON.parse(data);
-    return data;
-}
-
 async function writeWmRNConfig(content) {
     src = path.resolve(config.src) + '/';
     let jsonPath = src + 'wm_rn_config.json';
@@ -393,7 +377,7 @@ async function ejectProject(args) {
         });
         if (args.localrnruntimepath) {
             const linkFolderPath =
-            config.src + `node_modules/${global.WM_REPO_SCOPE}/app-rn-runtime`;
+            config.src + `node_modules/@wavemaker-ai/app-rn-runtime`;
             // using removeSync when target is directory and unlinkSync works when target is file.
             if (fs.existsSync(linkFolderPath)) {
                 fs.removeSync(linkFolderPath);

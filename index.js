@@ -26,7 +26,6 @@ const taskLogger = require('./src/custom-logger/task-logger').spinnerBar;
 
 global.rootDir = process.env.WM_REACTNATIVE_CLI || `${os.homedir()}/.wm-reactnative-cli`;
 global.localStorage = new LocalStorage(`${global.rootDir}/.store`);
-global.WM_REPO_SCOPE = '@wavemaker';
 // src is the web react native project zip
 
 async function handleDeprecatedCommands(args) {
