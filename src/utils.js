@@ -69,32 +69,11 @@ async function getDestPathForWindows(mode, projectDir = ''){
     return  destPath;
 }
 
-function updateIsAiPlatform(is_ai_platform = false){
-    if(is_ai_platform){
-        global.IS_AI_PLATFORM = true;
-        global.WM_REPO_SCOPE = '@wavemaker-ai';
-    }else {
-        global.IS_AI_PLATFORM = false;
-        global.WM_REPO_SCOPE = '@wavemaker';
-    }
-}
-
-function updatePackageLockFileWithWMRepoScope(packageLockJsonFilePath) {
-    if (!packageLockJsonFilePath || !fs.existsSync(packageLockJsonFilePath)) {
-        return;
-    }
-    const content = fs.readFileSync(packageLockJsonFilePath, 'utf-8');
-    const updated = content.replace(/@wavemaker(?!-ai)/g, '@wavemaker-ai');
-    fs.writeFileSync(packageLockJsonFilePath, updated, 'utf-8');
-}
-
 module.exports = {
     isWindowsOS: isWindowsOS,
     readAndReplaceFileContent: readAndReplaceFileContent,
     iterateFiles: iterateFiles,
     streamToString: streamToString,
     isExpoWebPreviewContainer: isExpoWebPreviewContainer, 
-    getDestPathForWindows: getDestPathForWindows,
-    updateIsAiPlatform: updateIsAiPlatform,
-    updatePackageLockFileWithWMRepoScope: updatePackageLockFileWithWMRepoScope
+    getDestPathForWindows: getDestPathForWindows
 };
