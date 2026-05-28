@@ -324,17 +324,24 @@ async function installDependencies(projectDir) {
         return content.replace(/src\s*:\s*url\(\$\{resource\.uri\}\);/g, 'src:url(.${resource.uri});');
     });
     // https://github.com/expo/expo/issues/24273#issuecomment-2132297993
-    await readAndReplaceFileContent(`${expoDir}/node_modules/@expo/metro-config/build/serializer/environmentVariableSerializerPlugin.js`, (content)=>{
-        content = content.replace('getEnvPrelude(str)', '//getEnvPrelude(str)');
-        return content.replace('// process.env', '// process.env \n firstModule.output[0].data.code = firstModule.output[0].data.code + str;');
-    });
+    const envPluginPath = `${expoDir}/node_modules/expo/node_modules/@expo/metro-config/build/serializer/environmentVariableSerializerPlugin.js`;
+    if (fs.existsSync(envPluginPath)) {
+        await readAndReplaceFileContent(envPluginPath, (content)=>{
+            content = content.replace('getEnvPrelude(str)', '//getEnvPrelude(str)');
+            return content.replace('// process.env', '// process.env \n firstModule.output[0].data.code = firstModule.output[0].data.code + str;');
+        });
+        console.log("Environment variable serializer plugin found and patched successfully");
+    }else{
+        console.log("Environment variable serializer plugin not found and not patched");
+    }
+
     taskLogger.succeed(previewSteps[4].succeed);
     } catch (e) {
         logger.error({
             label: loggerLabel,
             message: e+' Encountered an error while installing dependencies.'
           });
-        taskLogger.error(e+' Encountered an error while installing dependencies.');
+        taskLogger.fail(e+' Encountered an error while installing dependencies.');
     }
 }
 
